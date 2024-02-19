@@ -12,7 +12,7 @@ public class NiceController {
     public NiceDTO getNiceDTO() {
         // NiceDTO 객체를 동적으로 생성하여 반환
         return NiceDTO.builder()
-                .name("마동석")
+                .name("김민재")
                 .number(1004)
                 .location("남양주시 덕소리")
                 .fruit("banana")
