@@ -16,7 +16,7 @@ files:
 ## owner (optional): object 의 소유자
 ## group (optional): object 의 그룹 이름
 permissions:
-  - object: /
+  - object: /home/ubuntu
     pattern: "**"
     owner: ec2-user
     group: ec2-user
