@@ -6,7 +6,7 @@ os: linux
 ## destination: 인스턴스에서 파일이 복사되는 위치
 ## overwrite: 복사할 위치에 파일이 있는 경우 대체
 files:
-  - source: build/libs
+  - source: build/libs/
     destination: /home/ubuntu
     overwrite: yes
 
@@ -28,7 +28,15 @@ permissions:
 ## timeout (optional): 스크립트 실행에 허용되는 최대 시간이며, 넘으면 배포 실패로 간주됨
 ## runas (optional): 스크립트를 실행하는 사용자
 hooks:
+  BeforeInstall:
+    - location: scripts/before_install.sh
+      timeout: 60
+      runas: ec2-user
   AfterInstall:
+    - location: scripts/after_install.sh
+      timeout: 60
+      runas: ec2-user
+  ApplicationStop:
     - location: scripts/stop.sh
       timeout: 60
       runas: ec2-user
