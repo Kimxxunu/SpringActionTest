@@ -32,12 +32,12 @@ hooks:
   AfterInstall:
     - location: scripts/after_install.sh
       timeout: 60
-      runas: ec2-user
+      runas: ubuntu
   ApplicationStop:
     - location: scripts/stop.sh
       timeout: 60
-      runas: ec2-user
+      runas: ubuntu
   ApplicationStart:
     - location: scripts/start.sh
       timeout: 60
-      runas: ec2-user
+      runas: ubuntu
