@@ -12,7 +12,7 @@ files:
     overwrite: yes
 
 
-# files 섹션에서 복사한 파일에 대한 권한 설정
+# files 섹션에서 복사한 파일에 대한 권한 설정1
 ## object: 권한이 지정되는 파일 또는 디렉터리
 ## pattern (optional): 매칭되는 패턴에만 권한 부여
 ## owner (optional): object 의 소유자
