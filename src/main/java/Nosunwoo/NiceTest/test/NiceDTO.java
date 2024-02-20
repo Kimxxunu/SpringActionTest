@@ -9,10 +9,10 @@ import lombok.Setter;
 @Builder
 
 public class NiceDTO {
-    private String name = "김민재";
-    private int number = 1004;
+    private String name = "손흥민";
+    private int number = 1234;
     private String location = "남양주시 덕소리";
-    private String fruit = "banana";
+    private String fruit = "두리안";
     private String animal = "대머리독수리";
 
 }
