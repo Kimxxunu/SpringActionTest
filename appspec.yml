@@ -11,6 +11,7 @@ files:
     destination: /home/ubuntu
     overwrite: yes
 
+
 # files 섹션에서 복사한 파일에 대한 권한 설정
 ## object: 권한이 지정되는 파일 또는 디렉터리
 ## pattern (optional): 매칭되는 패턴에만 권한 부여
@@ -19,8 +20,8 @@ files:
 permissions:
   - object: /
     pattern: "**"
-    owner: ec2-user
-    group: ec2-user
+    owner: ubuntu
+    group: ubuntu
 
 # 배포 이후에 실행할 일련의 라이프사이클
 # 파일을 설치한 후 `AfterInstall` 에서 기존에 실행중이던 애플리케이션을 종료
@@ -32,8 +33,8 @@ hooks:
   AfterInstall:
     - location: scripts/stop.sh
       timeout: 60
-      runas: ec2-user
+      runas: ubuntu
   ApplicationStart:
     - location: scripts/start.sh
       timeout: 60
-      runas: ec2-user
+      runas: ubuntu
