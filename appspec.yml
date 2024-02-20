@@ -5,7 +5,7 @@ os: linux
 # 배포 파일 설정
 ## source: 인스턴스에 복사할 디렉터리 경로
 ## destination: 인스턴스에서 파일이 복사되는 위치
-## overwrite: 복사할 위치에 파일이 있는 경우 대체1
+## overwrite: 복사할 위치에 파일이 있는 경우 대체
 files:
   - source: /build/libs
     destination: /home/ubuntu
@@ -16,7 +16,7 @@ files:
 ## object: 권한이 지정되는 파일 또는 디렉터리
 ## pattern (optional): 매칭되는 패턴에만 권한 부여
 ## owner (optional): object 의 소유자
-## group (optional): object 의 그룹 이름1
+## group (optional): object 의 그룹 이름
 permissions:
   - object: /
     pattern: "**"
