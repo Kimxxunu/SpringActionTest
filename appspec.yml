@@ -17,10 +17,6 @@ permissions:
 ## runas (optional): 스크립트를 실행하는 사용자
 hooks:
   AfterInstall:
-    - location: scripts/after_install.sh
-      timeout: 60
-      runas: ubuntu
-  ApplicationStop:
     - location: scripts/stop.sh
       timeout: 60
       runas: ubuntu
