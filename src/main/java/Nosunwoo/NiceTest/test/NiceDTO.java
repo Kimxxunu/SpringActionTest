@@ -11,8 +11,8 @@ import lombok.Setter;
 public class NiceDTO {
     private String name = "김선우";
     private int number = 1234;
-    private String location = "남양주시 덕소리";
-    private String fruit = "수박";
-    private String animal = "캥거루";
+    private String location = "남양주시 덕소리 건영아파트";
+    private String fruit = "포도";
+    private String animal = "코끼리";
 
 }
