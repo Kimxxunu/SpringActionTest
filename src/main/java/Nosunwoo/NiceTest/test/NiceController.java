@@ -14,9 +14,9 @@ public class NiceController {
         return NiceDTO.builder()
                 .name("김선우")
                 .number(1234)
-                .location("남양주시 덕소리")
-                .fruit("수박")
-                .animal("캥거루")
+                .location("남양주시 덕소리 건영아파트")
+                .fruit("포도")
+                .animal("코끼리")
                 .build();
     }
 }
