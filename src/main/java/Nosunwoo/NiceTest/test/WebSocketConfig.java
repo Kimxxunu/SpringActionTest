@@ -13,7 +13,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // WebSocket 엔드포인트 등록
-        registry.addEndpoint("/chat");
+        registry.addEndpoint("/chat")
+                .setAllowedOrigins("http://localhost:8080", "http://localhost:8081", "http://localhost:3000");
     }
 
     @Override
