@@ -1,4 +1,4 @@
-package Nosunwoo.NiceTest.test;
+package Nosunwoo.NiceTest.test.nice;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;

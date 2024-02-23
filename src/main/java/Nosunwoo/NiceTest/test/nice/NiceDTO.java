@@ -1,4 +1,4 @@
-package Nosunwoo.NiceTest.test;
+package Nosunwoo.NiceTest.test.nice;
 
 import lombok.Builder;
 import lombok.Getter;
