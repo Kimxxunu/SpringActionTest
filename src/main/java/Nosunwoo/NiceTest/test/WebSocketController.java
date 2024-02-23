@@ -21,7 +21,7 @@ public class WebSocketController {
     @SendTo("/topic/messages")
     public String handleChatMessage(String message) {
         // 메시지를 받아 처리하고 다시 클라이언트로 보냅니다.
-        // 클라이언트로 메시지 전송
+        // 클라이언트로 메시지 전송1
         messagingTemplate.convertAndSend("/topic/messages", "서버에서 보낸 메시지: " + message);
         return message;
     }
