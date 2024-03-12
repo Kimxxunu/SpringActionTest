@@ -14,7 +14,7 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         // WebSocket 엔드포인트 등록
         registry.addEndpoint("/chat")
-                .setAllowedOrigins("http://localhost:8080", "http://localhost:8081", "http://localhost:3000", "http://github-action-chatting-app.s3-website.ap-northeast-2.amazonaws.com:8080");
+                .setAllowedOrigins("http://localhost:8080", "http://localhost:8081", "http://localhost:3000", "http://github-action-chatting-app.s3-website.ap-northeast-2.amazonaws.com");
     }
 
     @Override
