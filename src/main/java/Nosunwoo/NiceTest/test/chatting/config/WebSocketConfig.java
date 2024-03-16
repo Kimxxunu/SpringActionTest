@@ -1,4 +1,4 @@
-package Nosunwoo.NiceTest.test;
+package Nosunwoo.NiceTest.test.chatting.config;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
