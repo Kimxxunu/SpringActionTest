@@ -32,7 +32,7 @@ public class WebSocketController {
     public void handleChatMessage(ChattingDto chattingDto) {
         // 채팅 메시지를 해당 방으로 전송
         String roomName = chattingDto.getRoomName();
-        messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage());
+        messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage()+"ㅋㅋ");
 
         // 사용자 정보 저장
         UsersEntity usersEntity = usersService.saveUsersService(chattingDto.getUserName());
