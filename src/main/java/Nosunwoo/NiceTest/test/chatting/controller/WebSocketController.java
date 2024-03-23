@@ -29,10 +29,10 @@ public class WebSocketController {
     }
 
     @MessageMapping("/chat")
-    public void handleChatMessage(ChattingDto chattingDto) {
+    public String handleChatMessage(ChattingDto chattingDto) {
         // 채팅 메시지를 해당 방으로 전송
         String roomName = chattingDto.getRoomName();
-        messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage()+"ㅋㅋ");
+        messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage());
 
         // 사용자 정보 저장
         UsersEntity usersEntity = usersService.saveUsersService(chattingDto.getUserName());
@@ -42,6 +42,8 @@ public class WebSocketController {
 
         // 채팅 방 참여 정보 저장
         chatRoomJoinService.saveChatRoomJoin(usersEntity, chatRoomEntity);
+
+        return chattingDto.getMessage();
     }
 }
 
