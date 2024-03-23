@@ -13,13 +13,15 @@ public class ChatRoomJoinEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long join_id;
+    private int join_id;
 
-    @Column(nullable = false)
-    private Long user_id;
+    @ManyToOne // 다대일 관계를 나타냄
+    @JoinColumn(name = "user_id", nullable = false) // 외래 키 매핑
+    private UsersEntity user_id;
 
-    @Column(nullable = false)
-    private Long room_id;
+    @ManyToOne // 다대일 관계를 나타냄
+    @JoinColumn(name = "room_id", nullable = false) // 외래 키 매핑
+    private ChatRoomEntity room_id;
 
 
 }

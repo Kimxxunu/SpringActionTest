@@ -3,7 +3,16 @@ package Nosunwoo.NiceTest.test.chatting.dto;
 public class ChattingDto {
 
     private String roomName;
+    private String userName;
     private String message;
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public void setMessage(String message) {
         this.message = message;
