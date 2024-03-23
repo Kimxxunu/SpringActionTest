@@ -2,10 +2,10 @@ package Nosunwoo.NiceTest.test.chatting.dto;
 
 public class ChattingDto {
 
-    String roomName;
-    String message;
+    private String roomName;
+    private String message;
 
-     public void setMessage(String message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 
@@ -13,10 +13,11 @@ public class ChattingDto {
         return message;
     }
 
-    public String getRoomName()
-    {
+    public String getRoomName() {
         return roomName;
     }
 
-
+    public void setRoomName(String roomName) {
+        this.roomName = roomName;
+    }
 }
