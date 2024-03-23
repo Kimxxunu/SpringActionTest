@@ -1,9 +1,8 @@
 package Nosunwoo.NiceTest.test.chatting.controller;
 
-import Nosunwoo.NiceTest.test.chatting.ChattingDto;
+import Nosunwoo.NiceTest.test.chatting.dto.ChattingDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
 
