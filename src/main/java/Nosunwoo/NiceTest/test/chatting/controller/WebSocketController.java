@@ -43,7 +43,7 @@ public class WebSocketController {
         // 채팅 방 참여 정보 저장
         chatRoomJoinService.saveChatRoomJoin(usersEntity, chatRoomEntity);
 
-        return chattingDto.getMessage();
+        return chattingDto.getMessage()+"ㅋㅋ";
     }
 }
 
