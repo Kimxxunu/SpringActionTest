@@ -4,7 +4,7 @@ public class ChattingDto {
 
     private String roomName;
     private String userName;
-    private String message;
+    public String message;
 
     public String getUserName() {
         return userName;
