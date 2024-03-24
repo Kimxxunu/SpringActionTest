@@ -1,5 +1,4 @@
 package Nosunwoo.NiceTest.test.chatting.entity;
-import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -8,7 +7,6 @@ import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
-@Data
 @Getter
 @Setter
 @Table(name = "chat_messages")

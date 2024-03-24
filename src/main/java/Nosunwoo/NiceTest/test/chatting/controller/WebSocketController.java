@@ -3,12 +3,15 @@ package Nosunwoo.NiceTest.test.chatting.controller;
 import Nosunwoo.NiceTest.test.chatting.dto.ChattingDto;
 import Nosunwoo.NiceTest.test.chatting.entity.ChatRoomEntity;
 import Nosunwoo.NiceTest.test.chatting.entity.UsersEntity;
-import Nosunwoo.NiceTest.test.chatting.service.*;
+import Nosunwoo.NiceTest.test.chatting.service.ChatRoomJoinService;
+import Nosunwoo.NiceTest.test.chatting.service.ChatRoomService;
+import Nosunwoo.NiceTest.test.chatting.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,8 +32,8 @@ public class WebSocketController {
     }
 
     @PostMapping("/chat/info")
-    public void chattingInfo(ChattingDto chattingDto){
-        // 이미 존재하는 사용자 및 채팅 방인지 확인하고, 존재하지 않을 때만 저장
+    public void chattingInfo(@RequestBody ChattingDto chattingDto){
+        // 클라이언트로부터 받은 채팅 정보를 사용하여 사용자와 채팅방을 저장
         UsersEntity usersEntity = usersService.saveUsersService(chattingDto.getUserName());
         ChatRoomEntity chatRoomEntity = chatRoomService.saveChatRoom(chattingDto.getRoomName());
 
@@ -39,6 +42,7 @@ public class WebSocketController {
     }
 
     @MessageMapping("/chat")
+    @SendTo("/topic/messages")
     public String handleChatMessage(ChattingDto chattingDto) {
         // 채팅 메시지를 해당 방으로 전송
         String roomName = chattingDto.getRoomName();
@@ -48,7 +52,6 @@ public class WebSocketController {
         return chattingDto.getMessage() + "에 대한 응답입니다.";
     }
 }
-
 
 
 
