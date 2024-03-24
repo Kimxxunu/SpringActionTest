@@ -29,9 +29,10 @@ public class WebSocketController {
 
     @PostMapping("/chat/info")
     public void chattingInfo(ChattingDto chattingDto){
+        usersService.saveUsersService(chattingDto.getUserName());
+        chatRoomService.saveChatRoom(chattingDto.getRoomName());
         // 사용자 정보 저장
         UsersEntity usersEntity = usersService.saveUsersService(chattingDto.getUserName());
-
         // 채팅 방 정보 저장
         ChatRoomEntity chatRoomEntity = chatRoomService.saveChatRoom(chattingDto.getRoomName());
 
