@@ -2,9 +2,9 @@ package Nosunwoo.NiceTest.test.chatting.dto;
 
 public class ChattingDto {
 
-    private String roomName;
-    private String userName;
-    public String message;
+    String roomName;
+    String userName;
+    String message;
 
     public String getUserName() {
         return userName;
