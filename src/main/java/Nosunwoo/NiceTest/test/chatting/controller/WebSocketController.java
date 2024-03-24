@@ -37,8 +37,8 @@ public class WebSocketController {
         // 채팅 방 정보 저장
         ChatRoomEntity chatRoomEntity = chatRoomService.saveChatRoom(chattingDto.getRoomName());
 
-        // 채팅 방 참여 정보 저장
-        chatRoomJoinService.saveChatRoomJoin(usersEntity, chatRoomEntity);
+//        // 채팅 방 참여 정보 저장
+//        chatRoomJoinService.saveChatRoomJoin(usersEntity, chatRoomEntity);
     }
 
 
