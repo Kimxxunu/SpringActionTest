@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
 public class WebSocketController {
@@ -28,12 +29,8 @@ public class WebSocketController {
         this.chatRoomJoinService = chatRoomJoinService;
     }
 
-    @MessageMapping("/chat")
-    public String handleChatMessage(ChattingDto chattingDto) {
-        // 채팅 메시지를 해당 방으로 전송
-        String roomName = chattingDto.getRoomName();
-        messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage());
-
+    @PostMapping("/chat/info")
+    public void chattingInfo(ChattingDto chattingDto){
         // 사용자 정보 저장
         UsersEntity usersEntity = usersService.saveUsersService(chattingDto.getUserName());
 
@@ -42,6 +39,23 @@ public class WebSocketController {
 
         // 채팅 방 참여 정보 저장
         chatRoomJoinService.saveChatRoomJoin(usersEntity, chatRoomEntity);
+    }
+
+
+    @MessageMapping("/chat")
+    public String handleChatMessage(ChattingDto chattingDto) {
+        // 채팅 메시지를 해당 방으로 전송
+        String roomName = chattingDto.getRoomName();
+        messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage());
+
+//        // 사용자 정보 저장
+//        UsersEntity usersEntity = usersService.saveUsersService(chattingDto.getUserName());
+//
+//        // 채팅 방 정보 저장
+//        ChatRoomEntity chatRoomEntity = chatRoomService.saveChatRoom(chattingDto.getRoomName());
+//
+//        // 채팅 방 참여 정보 저장
+//        chatRoomJoinService.saveChatRoomJoin(usersEntity, chatRoomEntity);
 
         return chattingDto.getMessage()+"ㅋㅋ";
     }
