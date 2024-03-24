@@ -20,8 +20,8 @@ public class ChatRoomJoinServiceImpl implements ChatRoomJoinService {
     @Override
     public void saveChatRoomJoin(UsersEntity usersEntity, ChatRoomEntity chatRoomEntity) {
         ChatRoomJoinEntity chatRoomJoinEntity = new ChatRoomJoinEntity();
-        chatRoomJoinEntity.setUser_id(usersEntity);
-        chatRoomJoinEntity.setRoom_id(chatRoomEntity);
+        chatRoomJoinEntity.setUserId(usersEntity);
+        chatRoomJoinEntity.setRoomId(chatRoomEntity);
         chatRoomJoinRepository.save(chatRoomJoinEntity);
     }
 }

@@ -15,13 +15,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class WebSocketController {
 
     private final SimpMessagingTemplate messagingTemplate;
-    private final UsersServiceImpl usersService;
-    private final ChatRoomServiceImpl chatRoomService;
-    private final ChatRoomJoinServiceImpl chatRoomJoinService;
+    private final UsersService usersService;
+    private final ChatRoomService chatRoomService;
+    private final ChatRoomJoinService chatRoomJoinService;
 
     @Autowired
-    public WebSocketController(SimpMessagingTemplate messagingTemplate, UsersServiceImpl usersService,
-                               ChatRoomServiceImpl chatRoomService, ChatRoomJoinServiceImpl chatRoomJoinService) {
+    public WebSocketController(SimpMessagingTemplate messagingTemplate, UsersService usersService,
+                               ChatRoomService chatRoomService, ChatRoomJoinService chatRoomJoinService) {
         this.messagingTemplate = messagingTemplate;
         this.usersService = usersService;
         this.chatRoomService = chatRoomService;
@@ -30,17 +30,13 @@ public class WebSocketController {
 
     @PostMapping("/chat/info")
     public void chattingInfo(ChattingDto chattingDto){
-        usersService.saveUsersService(chattingDto.getUserName());
-        chatRoomService.saveChatRoom(chattingDto.getRoomName());
-        // 사용자 정보 저장
+        // 이미 존재하는 사용자 및 채팅 방인지 확인하고, 존재하지 않을 때만 저장
         UsersEntity usersEntity = usersService.saveUsersService(chattingDto.getUserName());
-        // 채팅 방 정보 저장
         ChatRoomEntity chatRoomEntity = chatRoomService.saveChatRoom(chattingDto.getRoomName());
 
         // 채팅 방 참여 정보 저장
         chatRoomJoinService.saveChatRoomJoin(usersEntity, chatRoomEntity);
     }
-
 
     @MessageMapping("/chat")
     public String handleChatMessage(ChattingDto chattingDto) {
@@ -48,18 +44,12 @@ public class WebSocketController {
         String roomName = chattingDto.getRoomName();
         messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage());
 
-//        // 사용자 정보 저장
-//        UsersEntity usersEntity = usersService.saveUsersService(chattingDto.getUserName());
-//
-//        // 채팅 방 정보 저장
-//        ChatRoomEntity chatRoomEntity = chatRoomService.saveChatRoom(chattingDto.getRoomName());
-//
-//        // 채팅 방 참여 정보 저장
-//        chatRoomJoinService.saveChatRoomJoin(usersEntity, chatRoomEntity);
-
-        return chattingDto.getMessage()+"ㅋㅋ";
+        // 예시로 메시지에 대한 응답을 반환합니다.
+        return chattingDto.getMessage() + "에 대한 응답입니다.";
     }
 }
+
+
 
 
 
