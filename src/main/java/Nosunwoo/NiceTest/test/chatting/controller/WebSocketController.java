@@ -4,7 +4,10 @@ import Nosunwoo.NiceTest.test.chatting.dto.ChattingDto;
 import Nosunwoo.NiceTest.test.chatting.dto.ChattingHistoryDto;
 import Nosunwoo.NiceTest.test.chatting.entity.ChatRoomEntity;
 import Nosunwoo.NiceTest.test.chatting.entity.UsersEntity;
-import Nosunwoo.NiceTest.test.chatting.service.*;
+import Nosunwoo.NiceTest.test.chatting.service.ChatMessagesService;
+import Nosunwoo.NiceTest.test.chatting.service.ChatRoomJoinService;
+import Nosunwoo.NiceTest.test.chatting.service.ChatRoomService;
+import Nosunwoo.NiceTest.test.chatting.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -25,7 +28,7 @@ public class WebSocketController {
 
     @Autowired
     public WebSocketController(SimpMessagingTemplate messagingTemplate, UsersService usersService,
-                               ChatRoomService chatRoomService, ChatRoomJoinService chatRoomJoinService, ChatMessagesServiceImpl chatMessagesService) {
+                               ChatRoomService chatRoomService, ChatRoomJoinService chatRoomJoinService, ChatMessagesService chatMessagesService) {
         this.messagingTemplate = messagingTemplate;
         this.usersService = usersService;
         this.chatRoomService = chatRoomService;
@@ -50,12 +53,12 @@ public class WebSocketController {
     }
 
     @MessageMapping("/chat")
-    @SendTo("/topic/messages")
     public void handleChatMessage(ChattingDto chattingDto) {
         // 채팅 메시지를 해당 방으로 전송
         String roomName = chattingDto.getRoomName();
         chatMessagesService.saveMessage(chattingDto);
-        chattingDto.setMessage(chattingDto.getMessage()+"ㅋㅋ");
+        chattingDto.setMessage(chattingDto.getMessage());
+
         messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage());
     }
 }
