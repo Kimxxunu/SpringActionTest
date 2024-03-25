@@ -4,10 +4,7 @@ import Nosunwoo.NiceTest.test.chatting.dto.ChattingDto;
 import Nosunwoo.NiceTest.test.chatting.dto.ChattingHistoryDto;
 import Nosunwoo.NiceTest.test.chatting.entity.ChatRoomEntity;
 import Nosunwoo.NiceTest.test.chatting.entity.UsersEntity;
-import Nosunwoo.NiceTest.test.chatting.service.ChatMessagesService;
-import Nosunwoo.NiceTest.test.chatting.service.ChatRoomJoinService;
-import Nosunwoo.NiceTest.test.chatting.service.ChatRoomService;
-import Nosunwoo.NiceTest.test.chatting.service.UsersService;
+import Nosunwoo.NiceTest.test.chatting.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
@@ -28,7 +25,7 @@ public class WebSocketController {
 
     @Autowired
     public WebSocketController(SimpMessagingTemplate messagingTemplate, UsersService usersService,
-                               ChatRoomService chatRoomService, ChatRoomJoinService chatRoomJoinService, ChatMessagesService chatMessagesService) {
+                               ChatRoomService chatRoomService, ChatRoomJoinService chatRoomJoinService, ChatMessagesServiceImpl chatMessagesService) {
         this.messagingTemplate = messagingTemplate;
         this.usersService = usersService;
         this.chatRoomService = chatRoomService;
