@@ -59,7 +59,7 @@ public class WebSocketController {
         String roomName = chattingDto.getRoomName();
         chatMessagesService.saveMessage(chattingDto);
         chattingDto.setMessage(chattingDto.getMessage()+"ㅋㅋ");
-        messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage());
+        messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: ");
     }
 }
 
