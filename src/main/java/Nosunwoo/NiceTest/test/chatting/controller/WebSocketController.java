@@ -55,7 +55,7 @@ public class WebSocketController {
 
 
     @MessageMapping("/chat")
-    public void handleChatMessage(@Payload ChattingDto chattingDto) {
+    public void handleChatMessage(ChattingDto chattingDto) {
         // 채팅 메시지를 해당 방으로 전송
         String roomName = chattingDto.getRoomName();
         chatMessagesService.saveMessage(chattingDto);
