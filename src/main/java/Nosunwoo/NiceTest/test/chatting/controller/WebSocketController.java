@@ -46,7 +46,7 @@ public class WebSocketController {
         chatRoomJoinService.saveChatRoomJoin(usersEntity, chatRoomEntity);
     }
 
-    @GetMapping
+    @GetMapping("/chat/info")
     public ChattingHistoryDto returnChatting(@RequestBody ChattingDto chattingDto){
         ChattingHistoryDto chattingHistoryDto = new ChattingHistoryDto(chatMessagesService.returnHistory(chattingDto.getRoomName()));
         return chattingHistoryDto;
