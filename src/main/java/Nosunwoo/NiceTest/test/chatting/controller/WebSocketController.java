@@ -61,7 +61,7 @@ public class WebSocketController {
         chatMessagesService.saveMessage(chattingDto);
 
         // 채팅 메시지를 해당 방으로 전송
-        messagingTemplate.convertAndSend("/topic/messages/" + roomName, chattingDto);
+       // messagingTemplate.convertAndSend("/topic/messages/" + roomName, chattingDto);
     }
 
 //    @MessageMapping("/chat")
