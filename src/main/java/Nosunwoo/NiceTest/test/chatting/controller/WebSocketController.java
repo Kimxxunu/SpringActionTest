@@ -61,7 +61,7 @@ public class WebSocketController {
         chatMessagesService.saveMessage(chattingDto);
         chattingDto.setMessage(chattingDto.getMessage()+"ㅋㅋ");
         // 예시로 메시지에 대한 응답을 반환합니다.
-        return chattingDto.getMessage();
+        return "ㅇㅋ";
     }
 }
 
