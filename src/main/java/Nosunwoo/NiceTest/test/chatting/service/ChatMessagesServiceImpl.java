@@ -45,7 +45,7 @@ public class ChatMessagesServiceImpl implements ChatMessagesService{
         List<ChattingDto> history = messages.stream()
                 .map(message -> {
                     ChattingDto dto = new ChattingDto();
-                    dto.setUserName(message.getUserId().getUserName());
+                    dto.setUserName2(message.getUserId().getUserName());
                     dto.setMessage(message.getMessage());
                     dto.setTime(message.getTime().toString());
                     return dto;
@@ -57,7 +57,7 @@ public class ChatMessagesServiceImpl implements ChatMessagesService{
     public void saveMessage(ChattingDto messageInfo){
         ChatMessageEntity chatMessage = new ChatMessageEntity();
         chatMessage.setMessage(messageInfo.getMessage());
-        chatMessage.setUserId(usersRepository.findByUserName(messageInfo.getUserName()));
+        chatMessage.setUserId(usersRepository.findByUserName(messageInfo.getUserName2()));
         chatMessage.setRoomId(chatRoomRepository.findByRoomName(messageInfo.getRoomName()));
         chatMessageRepository.save(chatMessage);
     }
