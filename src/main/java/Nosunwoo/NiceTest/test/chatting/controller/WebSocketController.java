@@ -55,12 +55,11 @@ public class WebSocketController {
     @MessageMapping("/chat")
     @SendTo("/topic/messages")
     public void handleChatMessage(ChattingDto chattingDto) {
-        // 채팅 메시지를 해당 방으로 전송
-        String roomName = chattingDto.getRoomName();
+        // 채팅 메시지를 저장
         chatMessagesService.saveMessage(chattingDto);
-        chattingDto.setMessage(chattingDto.getMessage());
 
-        messagingTemplate.convertAndSend("/topic/messages/", "서버에서 보낸 메시지: " + chattingDto.getMessage());
+        // 모든 클라이언트에게 메시지 전송
+        messagingTemplate.convertAndSend("/topic/messages", "서버에서 보낸 메시지: " + chattingDto.getMessage());
     }
 }
 
