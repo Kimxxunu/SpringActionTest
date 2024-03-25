@@ -54,14 +54,12 @@ public class WebSocketController {
 
     @MessageMapping("/chat")
     @SendTo("/topic/messages")
-    public String handleChatMessage(ChattingDto chattingDto) {
+    public void handleChatMessage(ChattingDto chattingDto) {
         // 채팅 메시지를 해당 방으로 전송
         String roomName = chattingDto.getRoomName();
-        messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage());
         chatMessagesService.saveMessage(chattingDto);
         chattingDto.setMessage(chattingDto.getMessage()+"ㅋㅋ");
-        // 예시로 메시지에 대한 응답을 반환합니다.
-        return "ㅇㅋ";
+        messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage());
     }
 }
 
