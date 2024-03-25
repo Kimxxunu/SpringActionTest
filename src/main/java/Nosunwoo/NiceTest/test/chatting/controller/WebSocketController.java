@@ -60,7 +60,7 @@ public class WebSocketController {
         chatMessagesService.saveMessage(chattingDto);
         chattingDto.setMessage(chattingDto.getMessage());
 
-        messagingTemplate.convertAndSend("/topic/messages/" + "1234", "서버에서 보낸 메시지: " + chattingDto.getMessage());
+        messagingTemplate.convertAndSend("/topic/messages/", "서버에서 보낸 메시지: " + chattingDto.getMessage());
     }
 }
 
