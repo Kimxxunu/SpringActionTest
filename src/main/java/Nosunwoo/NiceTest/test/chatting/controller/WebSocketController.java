@@ -53,16 +53,27 @@ public class WebSocketController {
         return chattingHistoryDto;
     }
 
+
     @MessageMapping("/chat")
-    @SendTo("/topic/messages")
     public void handleChatMessage(@Payload ChattingDto chattingDto) {
         // 채팅 메시지를 해당 방으로 전송
         String roomName = chattingDto.getRoomName();
         chatMessagesService.saveMessage(chattingDto);
-        chattingDto.setMessage(chattingDto.getMessage());
 
-        messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage());
+        // 채팅 메시지를 해당 방으로 전송
+        messagingTemplate.convertAndSend("/topic/messages/" + roomName, chattingDto);
     }
+
+//    @MessageMapping("/chat")
+//    @SendTo("/topic/messages")
+//    public void handleChatMessage(@Payload ChattingDto chattingDto) {
+//        // 채팅 메시지를 해당 방으로 전송
+//        String roomName = chattingDto.getRoomName();
+//        chatMessagesService.saveMessage(chattingDto);
+//        chattingDto.setMessage(chattingDto.getMessage());
+//
+//        messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage());
+//    }
 }
 
 
