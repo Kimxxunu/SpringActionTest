@@ -10,6 +10,7 @@ import Nosunwoo.NiceTest.test.chatting.service.ChatRoomService;
 import Nosunwoo.NiceTest.test.chatting.service.UsersService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
+import org.springframework.messaging.handler.annotation.Payload;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -39,7 +40,7 @@ public class WebSocketController {
     @PostMapping("/chat/info")
     public void chattingInfo(@RequestBody ChattingDto chattingDto){
         // 클라이언트로부터 받은 채팅 정보를 사용하여 사용자와 채팅방을 저장
-        UsersEntity usersEntity = usersService.saveUsersService(chattingDto.getUserName2());
+        UsersEntity usersEntity = usersService.saveUsersService(chattingDto.getUserName());
         ChatRoomEntity chatRoomEntity = chatRoomService.saveChatRoom(chattingDto.getRoomName());
 
         // 채팅 방 참여 정보 저장
@@ -54,7 +55,7 @@ public class WebSocketController {
 
     @MessageMapping("/chat")
     @SendTo("/topic/messages")
-    public void handleChatMessage(ChattingDto chattingDto) {
+    public void handleChatMessage(@Payload ChattingDto chattingDto) {
         // 채팅 메시지를 해당 방으로 전송
         String roomName = chattingDto.getRoomName();
         chatMessagesService.saveMessage(chattingDto);
