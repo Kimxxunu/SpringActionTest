@@ -60,7 +60,7 @@ public class WebSocketController {
         String roomName = chattingDto.getRoomName();
         chatMessagesService.saveMessage(chattingDto);
         // 채팅 메시지를 해당 방으로 전송
-        messagingTemplate.convertAndSend("/topic/messages/" + roomName, chattingDto);
+        messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage());
     }
 
 //    @MessageMapping("/chat")
