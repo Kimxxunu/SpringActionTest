@@ -38,7 +38,7 @@ public class WebSocketController {
     }
 
     @PostMapping("/chat/info")
-    public void chattingInfo(@RequestBody ChattingDto chattingDto){
+    public void chattingInfo(@RequestBody ChattingDto chattingDto) {
         // 클라이언트로부터 받은 채팅 정보를 사용하여 사용자와 채팅방을 저장
         UsersEntity usersEntity = usersService.saveUsersService(chattingDto.getUserName());
         ChatRoomEntity chatRoomEntity = chatRoomService.saveChatRoom(chattingDto.getRoomName());
@@ -48,21 +48,25 @@ public class WebSocketController {
     }
 
     @GetMapping("/chat/info")
-    public ChattingHistoryDto returnChatting(@RequestBody ChattingDto chattingDto){
+    public ChattingHistoryDto returnChatting(@RequestBody ChattingDto chattingDto) {
         ChattingHistoryDto chattingHistoryDto = new ChattingHistoryDto(chatMessagesService.returnHistory(chattingDto.getRoomName()));
         return chattingHistoryDto;
     }
 
 
-    @MessageMapping("/chat")
-    public void handleChatMessage(ChattingDto chattingDto) {
-        // 채팅 메시지를 해당 방으로 전송
-        String roomName = chattingDto.getRoomName();
-        chatMessagesService.saveMessage(chattingDto);
-        // 채팅 메시지를 해당 방으로 전송
-        messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage());
-    }
-
+//    @MessageMapping("/chat")
+//    public void handleChatMessage(ChattingDto chattingDto) {
+//        System.out.println("방이름 : " + chattingDto.getRoomName());
+//        System.out.println("사용자 : " + chattingDto.getUserName());
+//        System.out.println("메세지내용 : " + chattingDto.getMessage());
+//
+//        // 채팅 메시지를 해당 방으로 전송
+//        String roomName = chattingDto.getRoomName();
+//        chatMessagesService.saveMessage(chattingDto);
+//        // 채팅 메시지를 해당 방으로 전송
+//        messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage());
+//    }
+}
 //    @MessageMapping("/chat")
 //    @SendTo("/topic/messages")
 //    public void handleChatMessage(@Payload ChattingDto chattingDto) {
@@ -73,7 +77,7 @@ public class WebSocketController {
 //
 //        messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage());
 //    }
-}
+
 
 
 
