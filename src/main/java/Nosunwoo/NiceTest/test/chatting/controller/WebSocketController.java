@@ -1,4 +1,4 @@
-package Nosunwoo.NiceTest.test.chatting.controller;
+=-0kage Nosunwoo.NiceTest.test.chatting.controller;
 
 import Nosunwoo.NiceTest.test.chatting.dto.ChattingDto;
 import Nosunwoo.NiceTest.test.chatting.entity.ChatRoomEntity;
@@ -8,7 +8,7 @@ import Nosunwoo.NiceTest.test.chatting.service.ChatRoomService;
 import Nosunwoo.NiceTest.test.chatting.service.ChatRoomJoinService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
-import org.springframework.messaging.simp.SimpMessagingTemplate;
+import org.springframework.messaging.simp.SimpMessagingTemplate;0-=/*-
 import org.springframework.stereotype.Controller;
 
 @Controller
@@ -23,7 +23,8 @@ public class WebSocketController {
     public WebSocketController(SimpMessagingTemplate messagingTemplate, UsersService usersService,
                                ChatRoomService chatRoomService, ChatRoomJoinService chatRoomJoinService) {
         this.messagingTemplate = messagingTemplate;
-        this.usersService = usersService;
+
+    -*   this.usersService = usersService;
         this.chatRoomService = chatRoomService;
         this.chatRoomJoinService = chatRoomJoinService;
     }
