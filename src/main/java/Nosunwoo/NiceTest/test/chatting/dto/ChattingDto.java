@@ -1,32 +1,12 @@
 package Nosunwoo.NiceTest.test.chatting.dto;
 
+import lombok.Data;
+
+@Data
 public class ChattingDto {
-
-    private String roomName;
+    private String message; // 추가: 채팅 메시지
     private String userName;
-    public String message;
+    private String roomName;
+    private String time;
 
-    public String getUserName() {
-        return userName;
-    }
-
-    public void setUserName(String userName) {
-        this.userName = userName;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public String getRoomName() {
-        return roomName;
-    }
-
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
-    }
 }

@@ -1,5 +1,6 @@
 package Nosunwoo.NiceTest.test.chatting.entity;
 
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,15 +14,15 @@ public class ChatRoomJoinEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int join_id;
+    private int joinId;
 
     @ManyToOne // 다대일 관계를 나타냄
-    @JoinColumn(name = "user_id", nullable = false) // 외래 키 매핑
-    private UsersEntity user_id;
+    @JoinColumn(name = "userId", nullable = false) // 외래 키 매핑
+    private UsersEntity userId;
 
     @ManyToOne // 다대일 관계를 나타냄
-    @JoinColumn(name = "room_id", nullable = false) // 외래 키 매핑
-    private ChatRoomEntity room_id;
+    @JoinColumn(name = "roomId", nullable = false) // 외래 키 매핑
+    private ChatRoomEntity roomId;
 
 
 }

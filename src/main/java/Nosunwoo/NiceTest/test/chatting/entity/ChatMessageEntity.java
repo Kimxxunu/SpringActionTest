@@ -14,7 +14,7 @@ public class ChatMessageEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int message_id;
+    private int messageId;
 
     @Column(nullable = false)
     private String message;
@@ -24,11 +24,11 @@ public class ChatMessageEntity {
 
     @ManyToOne // 다대일 관계를 나타냄
     @JoinColumn(name = "user_id", nullable = false) // 외래 키 매핑
-    private UsersEntity user_id;
+    private UsersEntity userId;
 
     @ManyToOne // 다대일 관계를 나타냄
-    @JoinColumn(name = "room_id", nullable = false) // 외래 키 매핑
-    private ChatRoomEntity room_id;
+    @JoinColumn(name = "roomId", nullable = false) // 외래 키 매핑
+    private ChatRoomEntity roomId;
 
 
 }

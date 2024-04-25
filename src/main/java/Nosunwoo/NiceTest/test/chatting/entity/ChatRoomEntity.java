@@ -13,7 +13,7 @@ public class ChatRoomEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int room_id;
+    private int roomId;
 
     @Column(nullable = false)
     private String roomName;
