@@ -8,6 +8,8 @@ import Nosunwoo.NiceTest.test.chatting.service.ChatMessagesService;
 import Nosunwoo.NiceTest.test.chatting.service.ChatRoomJoinService;
 import Nosunwoo.NiceTest.test.chatting.service.ChatRoomService;
 import Nosunwoo.NiceTest.test.chatting.service.UsersService;
+import org.slf4j.LoggerFactory;
+import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -18,9 +20,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
+
 @RestController
 public class WebSocketController {
-
+    private static final Logger logger = LoggerFactory.getLogger(WebSocketController.class);
     private final SimpMessagingTemplate messagingTemplate;
     private final UsersService usersService;
     private final ChatRoomService chatRoomService;
@@ -38,7 +42,8 @@ public class WebSocketController {
     }
 
     @PostMapping("/chat/info")
-    public void chattingInfo(@RequestBody ChattingDto chattingDto) {
+    public void chattingInfo(ChattingDto chattingDto) {
+        logger.debug("방이름 : {}", chattingDto.getRoomName());
         // 클라이언트로부터 받은 채팅 정보를 사용하여 사용자와 채팅방을 저장
         UsersEntity usersEntity = usersService.saveUsersService(chattingDto.getUserName());
         ChatRoomEntity chatRoomEntity = chatRoomService.saveChatRoom(chattingDto.getRoomName());
@@ -50,22 +55,23 @@ public class WebSocketController {
     @GetMapping("/chat/info")
     public ChattingHistoryDto returnChatting(@RequestBody ChattingDto chattingDto) {
         ChattingHistoryDto chattingHistoryDto = new ChattingHistoryDto(chatMessagesService.returnHistory(chattingDto.getRoomName()));
+        System.out.println("대성이가 보내준 채팅방 이름 : "+ chattingDto.getRoomName());
         return chattingHistoryDto;
     }
 
 
-//    @MessageMapping("/chat")
-//    public void handleChatMessage(ChattingDto chattingDto) {
-//        System.out.println("방이름 : " + chattingDto.getRoomName());
-//        System.out.println("사용자 : " + chattingDto.getUserName());
-//        System.out.println("메세지내용 : " + chattingDto.getMessage());
-//
-//        // 채팅 메시지를 해당 방으로 전송
-//        String roomName = chattingDto.getRoomName();
-//        chatMessagesService.saveMessage(chattingDto);
-//        // 채팅 메시지를 해당 방으로 전송
-//        messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage());
-//    }
+    @MessageMapping("/chat")
+    public void handleChatMessage(ChattingDto chattingDto) {
+        logger.debug("방이름 : {}", chattingDto.getRoomName());
+        logger.debug("사용자 : {}", chattingDto.getUserName());
+        logger.debug("메세지내용 : {}", chattingDto.getMessage());
+
+        // 채팅 메시지를 해당 방으로 전송
+        String roomName = chattingDto.getRoomName();
+        chatMessagesService.saveMessage(chattingDto);
+        // 채팅 메시지를 해당 방으로 전송
+        messagingTemplate.convertAndSend("/topic/messages/" + roomName, "서버에서 보낸 메시지: " + chattingDto.getMessage());
+    }
 }
 //    @MessageMapping("/chat")
 //    @SendTo("/topic/messages")
