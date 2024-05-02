@@ -18,6 +18,13 @@ public class BoardController {
     @Autowired
     private BoardService boardService;
 
+    @GetMapping("/mama")
+    public String mama(){
+
+        return "마마마";
+    }
+
+
     @PostMapping
     public ResponseEntity<?> createBoard(
             @RequestParam("title") String title,
