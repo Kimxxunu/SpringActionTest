@@ -74,7 +74,7 @@ jobs:
           context: .
           file: Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/spring-image:latest .
+          tags: ${{ secrets.DOCKER_USERNAME }}/spring-image:latest
 
 
 
