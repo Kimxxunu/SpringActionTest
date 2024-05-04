@@ -1,12 +1,23 @@
 package Nosunwoo.NiceTest.test.nice;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api")
 public class NiceController {
+
+    public static final UUID randomUUID = UUID.randomUUID();
+
+    @GetMapping("/test")
+    public ResponseEntity<UUID> test(){
+        return ResponseEntity.ok(randomUUID);
+    }
+
 
     @GetMapping("/nice")
     public NiceDTO getNiceDTO() {
