@@ -83,6 +83,7 @@ jobs:
           key: ${{ secrets.EC2_KEY }}
           host: ${{ secrets.EC2_IP }}
           username: sunwoo
+          port: 22
           script:
             docker container stop spring-image;
             docker image rm ${{ secrets.DOCKER_USERNAME }}/spring-image;
