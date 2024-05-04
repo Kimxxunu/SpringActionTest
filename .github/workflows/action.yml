@@ -87,7 +87,7 @@ jobs:
         id: deploy
         with:
           host: ${{ secrets.EC2_IP }}
-          username: ubuntu
+          username: sunwoo
           key: ${{ secrets.EC2_KEY }}
           envs: GITHUB_SHA
           script: |
