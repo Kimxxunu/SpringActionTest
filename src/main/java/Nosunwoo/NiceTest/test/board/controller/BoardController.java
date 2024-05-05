@@ -48,9 +48,9 @@ public class BoardController {
 
     @PostMapping
     public ResponseEntity<?> createBoard(
-            @RequestPart("title") String title,
-            @RequestPart("content") String content,
-            @RequestPart("createdBy") String createdBy,
+            @RequestParam("title") String title,
+            @RequestParam("content") String content,
+            @RequestParam("createdBy") String createdBy,
             @RequestPart("images") List<MultipartFile> images // 여러 개의 이미지를 받기 위해 List로 변경
     ) {
         BoardDTO boardDTO = new BoardDTO();
@@ -58,7 +58,6 @@ public class BoardController {
         boardDTO.setContent(content);
         boardDTO.setCreatedBy(createdBy);
         boardDTO.setFiles(images);
-
         try {
             boardService.saveBoard(boardDTO);
             return ResponseEntity.ok().build();
