@@ -111,6 +111,44 @@ public class BoardServiceImpl implements BoardService {
                 .collect(Collectors.toList()));
         return boardDTO;
     }
+
+    // BoardServiceImpl.java
+
+    @Override
+    public void updateBoard(BoardDTO boardDTO) throws IOException {
+        // 기존 게시물 불러오기
+        BoardEntity existingBoard = boardRepository.findById(boardDTO.getId())
+                .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다. ID: " + boardDTO.getId()));
+
+        // 기존 이미지 S3에서 삭제
+        List<BoardImageEntity> existingImages = existingBoard.getImages();
+        for (BoardImageEntity imageEntity : existingImages) {
+            s3Service.deleteFile(imageEntity.getImageUrl());
+        }
+
+        // 새로운 이미지 업로드 및 URL 리스트 가져오기
+        List<String> newImageUrls = uploadImagesToS3(boardDTO.getFiles());
+
+        // BoardEntity 업데이트
+        existingBoard.setTitle(boardDTO.getTitle());
+        existingBoard.setContent(boardDTO.getContent());
+        existingBoard.setCreatedBy(boardDTO.getCreatedBy());
+
+        // 새로운 이미지 엔티티 생성
+        List<BoardImageEntity> newImages = newImageUrls.stream().map(imageUrl -> {
+            BoardImageEntity imageEntity = new BoardImageEntity();
+            imageEntity.setBoard(existingBoard);
+            imageEntity.setImageUrl(imageUrl);
+            return imageEntity;
+        }).collect(Collectors.toList());
+
+        existingBoard.setImages(newImages);
+
+        // 저장
+        boardRepository.save(existingBoard);
+    }
+
+
 }
 
 

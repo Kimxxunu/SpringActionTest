@@ -84,6 +84,30 @@ public class BoardController {
         return ResponseEntity.ok(boardDTOs);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<?> updateBoard(
+            @PathVariable Long id,
+            @RequestParam("title") String title,
+            @RequestParam("content") String content,
+            @RequestParam("createdBy") String createdBy,
+            @RequestPart("images") List<MultipartFile> images
+    ) {
+        BoardDTO boardDTO = new BoardDTO();
+        boardDTO.setId(id); // 수정할 게시물의 ID를 설정
+        boardDTO.setTitle(title);
+        boardDTO.setContent(content);
+        boardDTO.setCreatedBy(createdBy);
+        boardDTO.setFiles(images);
+
+        try {
+            boardService.updateBoard(boardDTO); // 게시물 수정 서비스 호출
+            return ResponseEntity.ok().build();
+        } catch (IOException e) {
+            return ResponseEntity.badRequest().body("게시물 수정 실패 : " + e.getMessage());
+        }
+    }
+
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> deleteBoard(@PathVariable Long id) {
         boardService.deleteBoard(id);

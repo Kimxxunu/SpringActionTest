@@ -12,4 +12,5 @@ public interface BoardService {
     void deleteBoard(Long id);
     BoardDTO getBoard(Long id);
     List<BoardDTO> getAllBoards();
+    void updateBoard(BoardDTO boardDTO) throws IOException;
 }
