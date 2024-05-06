@@ -59,7 +59,7 @@ jobs:
                 
           # GitHub Actions에서 설정한 값을 base64 디코딩하여 application.yml 파일에 쓰기
           echo "copy properties"
-          echo "${{ secrets.MAKE_APPLICATION }}" | base64 --decode > ./application.yml
+          echo "${{ secrets.APPLICATION }}" | base64 --decode > ./application.yml
         shell: bash
 
 #      # create application.yml
