@@ -2,6 +2,7 @@ package Nosunwoo.NiceTest.test.s3;
 
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -94,25 +95,74 @@ public class S3Service {
         }
     }
 
-    // S3에서 파일 삭제하는 메서드
-    public void deleteFile(String fileName) {
+
+    // 이미지 수정으로 인해 기존 이미지 삭제 메소드
+    public void deleteFile(String fileUrl) {
         try {
-            // URL 디코딩을 통해 원래의 파일 이름을 가져옵니다.
-            String decodedFileName = URLDecoder.decode(fileName, "UTF-8");
-            log.info("Deleting file from S3: " + decodedFileName);
-            amazonS3.deleteObject(bucket, decodedFileName);
+            String decodedFileName = URLDecoder.decode(fileUrl, "UTF-8");
+            String splitStr = ".com/";
+            String fileName = decodedFileName.substring(decodedFileName.lastIndexOf(splitStr) + splitStr.length());
+            amazonS3.deleteObject(new DeleteObjectRequest(bucket, fileName));
+            log.info("File deleted successfully from S3: " + fileName);
         } catch (UnsupportedEncodingException e) {
             log.error("Error while decoding the file name: {}", e.getMessage());
         }
     }
 
-    // 파일 업데이트 메서드
-    public String updateFile(MultipartFile newFile, String oldFileName, String dirName) throws IOException {
-        // 기존 파일 삭제
-        log.info("S3 oldFileName: " + oldFileName);
-        deleteFile(oldFileName);
+//    // S3에서 파일 삭제하는 메서드
+//    public void deleteFile(String fileName) {
+//        try {
+//            // URL 디코딩을 통해 원래의 파일 이름을 가져옵니다.
+//            String decodedFileName = URLDecoder.decode(fileName, "UTF-8");
+//            // URL에서 파일 이름을 추출합니다.
+//            String s3fileName = decodedFileName.substring(decodedFileName.lastIndexOf("/") + 1);
+//            log.info("Extracted file name from URL: " + s3fileName);
+//
+//            amazonS3.deleteObject(bucket,"board/"+ s3fileName);
+//            // 성공적으로 삭제되었음을 로그로 남깁니다.
+//            log.info("File deleted successfully from S3: " + decodedFileName);
+//        } catch (UnsupportedEncodingException e) {
+//            log.error("Error while decoding the file name: {}", e.getMessage());
+//        }
+//    }
 
-        // 새 파일 업로드
-        return upload(newFile, dirName);
-    }
+
+
+//    // S3에서 파일 삭제하는 메서드
+//    public void deleteFile(String fileName) {
+//        try {
+//            // URL 디코딩을 통해 원래의 파일 이름을 가져옵니다.
+//            String decodedFileName = URLDecoder.decode(fileName, "UTF-8");
+//            log.info("Deleting file from S3: " + decodedFileName);
+//            amazonS3.deleteObject(bucket, decodedFileName);
+//            // 성공적으로 삭제되었음을 로그로 남깁니다.
+//            log.info("File deleted successfully from S3: " + decodedFileName);
+//        } catch (UnsupportedEncodingException e) {
+//            log.error("Error while decoding the file name: {}", e.getMessage());
+//        }
+//    }
+
+
+//    // find image from s3
+//    public String getThumbnailPath(String path) {
+//        return amazonS3.getUrl(bucket, path).toString();
+//    }
+//
+//    //remove s3 object
+//    public void deleteFile(String fileName){
+//        DeleteObjectRequest request = new DeleteObjectRequest(bucket, fileName);
+//        amazonS3.deleteObject(request);
+//    }
+//
+
+
+//    // 파일 업데이트 메서드
+//    public String updateFile(MultipartFile newFile, String oldFileName, String dirName) throws IOException {
+//        // 기존 파일 삭제
+//        log.info("S3 oldFileName: " + oldFileName);
+//        deleteFile(oldFileName);
+//
+//        // 새 파일 업로드
+//        return upload(newFile, dirName);
+//    }
 }

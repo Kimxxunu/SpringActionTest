@@ -3,20 +3,26 @@ package Nosunwoo.NiceTest.test.board.service;
 import Nosunwoo.NiceTest.test.board.dto.BoardDTO;
 import Nosunwoo.NiceTest.test.board.entity.BoardEntity;
 import Nosunwoo.NiceTest.test.board.entity.BoardImageEntity;
+import Nosunwoo.NiceTest.test.board.repository.BoardImageRepository;
 import Nosunwoo.NiceTest.test.board.repository.BoardRepository;
 import Nosunwoo.NiceTest.test.s3.S3Service;
+import com.amazonaws.services.kms.model.NotFoundException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @RequiredArgsConstructor
 public class BoardServiceImpl implements BoardService {
 
+    private final BoardImageRepository boardImageRepository;
     private final BoardRepository boardRepository;
     private final S3Service s3Service;
 
@@ -36,6 +42,7 @@ public class BoardServiceImpl implements BoardService {
     public void deleteBoard(Long id) {
         boardRepository.deleteById(id);
     }
+
 
     // ID로 게시물 조회 메서드
     @Override
@@ -112,44 +119,98 @@ public class BoardServiceImpl implements BoardService {
         return boardDTO;
     }
 
-    // BoardServiceImpl.java
+
+
 
     @Override
     public void updateBoard(BoardDTO boardDTO) throws IOException {
-        // 기존 게시물 불러오기
-        BoardEntity existingBoard = boardRepository.findById(boardDTO.getId())
-                .orElseThrow(() -> new RuntimeException("게시물을 찾을 수 없습니다. ID: " + boardDTO.getId()));
+        // 게시물 ID로 데이터베이스에서 해당 게시물을 찾습니다.
+        Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(boardDTO.getId());
+        if (optionalBoardEntity.isPresent()) {
+            BoardEntity boardEntity = optionalBoardEntity.get();
 
-        // 기존 이미지 S3에서 삭제
-        List<BoardImageEntity> existingImages = existingBoard.getImages();
-        for (BoardImageEntity imageEntity : existingImages) {
-            s3Service.deleteFile(imageEntity.getImageUrl());
+            // 삭제된 이미지의 URL을 가져와서 S3에서 삭제하고 엔티티에서도 제거합니다.
+            for (String deletedImageUrl : boardDTO.getImageUrls()) {
+                // 이미지 URL을 통해 해당 이미지를 찾습니다.
+                BoardImageEntity imageEntity = boardImageRepository.findByImageUrl(deletedImageUrl);
+                if (imageEntity != null) {
+                    Long imgID = imageEntity.getId();
+                    // 삭제된 이미지를 데이터베이스에서도 삭제합니다.
+                    boardImageRepository.deleteById(imgID);
+                    // S3에서 이미지를 삭제합니다.
+                    s3Service.deleteFile(deletedImageUrl);
+                    // 이미지 리스트에서도 해당 이미지를 제거합니다.
+                    boardEntity.getImages().remove(imageEntity);
+                    System.out.println("Deleted Image URL: " + deletedImageUrl);
+                    System.out.println("Image removed from entity: " + deletedImageUrl);
+                }
+            }
+
+            // 게시물 정보를 업데이트합니다.
+            boardEntity.setTitle(boardDTO.getTitle());
+            boardEntity.setContent(boardDTO.getContent());
+            boardEntity.setCreatedBy(boardDTO.getCreatedBy());
+
+            // 새로 업로드된 이미지들을 엔티티에 추가합니다.
+            List<String> uploadedImageUrls = uploadImagesToS3(boardDTO.getFiles());
+            List<BoardImageEntity> newImages = uploadedImageUrls.stream()
+                    .map(imageUrl -> {
+                        BoardImageEntity imageEntity = new BoardImageEntity();
+                        imageEntity.setBoard(boardEntity);
+                        imageEntity.setImageUrl(imageUrl);
+                        return imageEntity;
+                    })
+                    .collect(Collectors.toList());
+            boardEntity.setImages(newImages); // 새 이미지로 대체
+
+            // 업데이트된 게시물 엔티티를 데이터베이스에 저장합니다.
+            boardRepository.save(boardEntity);
+        } else {
+            throw new NotFoundException("해당 ID로 게시물을 찾을 수 없습니다: " + boardDTO.getId());
         }
-
-        // 새로운 이미지 업로드 및 URL 리스트 가져오기
-        List<String> newImageUrls = uploadImagesToS3(boardDTO.getFiles());
-
-        // BoardEntity 업데이트
-        existingBoard.setTitle(boardDTO.getTitle());
-        existingBoard.setContent(boardDTO.getContent());
-        existingBoard.setCreatedBy(boardDTO.getCreatedBy());
-
-        // 새로운 이미지 엔티티 생성
-        List<BoardImageEntity> newImages = newImageUrls.stream().map(imageUrl -> {
-            BoardImageEntity imageEntity = new BoardImageEntity();
-            imageEntity.setBoard(existingBoard);
-            imageEntity.setImageUrl(imageUrl);
-            return imageEntity;
-        }).collect(Collectors.toList());
-
-        existingBoard.setImages(newImages);
-
-        // 저장
-        boardRepository.save(existingBoard);
     }
 
 
+//    public void updateBoard(BoardDTO boardDTO) throws IOException {
+//        // 게시물 ID로 데이터베이스에서 해당 게시물을 찾습니다.
+//        Optional<BoardEntity> optionalBoardEntity = boardRepository.findById(boardDTO.getId());
+//        if (optionalBoardEntity.isPresent()) {
+//            BoardEntity boardEntity = optionalBoardEntity.get();
+//
+//            // 삭제된 이미지의 URL을 가져와서 S3에서 삭제하고 엔티티에서도 제거합니다.
+//            for (String deletedImageUrl : boardDTO.getImageUrls()) {
+//                // 게시물 엔티티에서도 해당 이미지를 제거합니다.
+//                System.out.println("Deleted Image URL: " + deletedImageUrl);
+//                // 이미지가 삭제되었는지 확인하기 위해 로그를 출력합니다.
+//                boardEntity.getImages().removeIf(image -> {
+//                    if (image.getImageUrl().equals(deletedImageUrl)) {
+//                        System.out.println("Image removed from entity: " + deletedImageUrl);
+//                        return true;
+//                    }
+//                    return false;
+//                });
+//                // S3에서 이미지를 삭제합니다.
+//                s3Service.deleteFile(deletedImageUrl);
+//
+//            }
+//
+//            // 게시물 정보를 업데이트합니다.
+//            boardEntity.setTitle(boardDTO.getTitle());
+//            boardEntity.setContent(boardDTO.getContent());
+//            boardEntity.setCreatedBy(boardDTO.getCreatedBy());
+//
+//            uploadImagesToS3(boardDTO.getFiles());
+//            // 업데이트된 게시물 엔티티를 데이터베이스에 저장합니다.
+//            boardRepository.save(boardEntity);
+//        } else {
+//            throw new NotFoundException("해당 ID로 게시물을 찾을 수 없습니다: " + boardDTO.getId());
+//        }
+//    }
+
+
+
 }
+
 
 
 
