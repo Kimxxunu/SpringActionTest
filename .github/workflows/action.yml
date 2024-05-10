@@ -116,8 +116,8 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           username: ubuntu
-          host: ${{ secrets.EC2_IP }}
-          key: ${{ secrets.EC2_KEY }}
+          host: ${{ secrets.EC2_IP_3 }}
+          key: ${{ secrets.EC2_KEY_3 }}
           script_stop: true
           script: |
             sudo docker pull ${{ secrets.DOCKER_USERNAME }}/spring-image:latest
@@ -139,7 +139,7 @@ jobs:
       - name: Check deploy server1 URL
         uses: jtalk/url-health-check-action@v3
         with:
-          url: http://${{ secrets.EC2_IP }}:${{env.STOPPED_PORT}}/api/env
+          url: http://${{ secrets.EC2_IP_3 }}:${{env.STOPPED_PORT}}/api/env
           max-attempts: 4
           retry-delay: 10s
 
@@ -156,8 +156,8 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           username: ubuntu
-          host: ${{ secrets.EC2_IP }}
-          key: ${{ secrets.EC2_KEY }}
+          host: ${{ secrets.EC2_IP_3 }}
+          key: ${{ secrets.EC2_KEY_3 }}
           script_stop: true
           script: |
             sudo docker exec -i nginxServer bash -c 'echo "set \$service_url ${{ env.TARGET_UPSTREAM }};" > /etc/nginx/conf.d/service-env.inc && nginx -s reload' 
@@ -178,8 +178,8 @@ jobs:
         uses: appleboy/ssh-action@master
         with:
           username: ubuntu
-          host: ${{ secrets.EC2_IP }}
-          key: ${{ secrets.EC2_KEY }}
+          host: ${{ secrets.EC2_IP_3 }}
+          key: ${{ secrets.EC2_KEY_3 }}
           script_stop: true
           script: |
             sudo docker stop ${{env.CURRENT_UPSTREAM}} 
