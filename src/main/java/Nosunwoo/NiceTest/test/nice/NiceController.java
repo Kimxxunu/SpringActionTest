@@ -15,6 +15,8 @@ import java.util.UUID;
 @RequestMapping("/api")
 public class NiceController {
 
+    public static final UUID randomUUID= UUID.randomUUID();
+
     // application.yml에 설정된 값들을 주입받습니다.
     @Value("${server.env}")
     private String env; // 서버 환경
@@ -22,8 +24,8 @@ public class NiceController {
     @Value("${server.port}")
     private String serverPort; // 서버 포트
 
-    @Value("${server.serverAddress}")
-    private String serverAddress; // 서버 주소
+//    @Value("${server.serverAddress}")
+//    private String serverAddress; // 서버 주소
 
     @Value("${serverName}")
     private String serverName; // 서버 이름
@@ -34,10 +36,9 @@ public class NiceController {
         // 서버의 상태 정보를 Map에 담아 반환합니다.
         Map<String, String> responseData = new TreeMap<>();
         responseData.put("serverName", serverName);
-        responseData.put("serverAddress", serverAddress);
+        //responseData.put("serverAddress", serverAddress);
         responseData.put("serverPort", serverPort);
         responseData.put("env", env);
-
         return ResponseEntity.ok(responseData);
     }
 
@@ -46,6 +47,10 @@ public class NiceController {
     public  ResponseEntity<?> getEnv(){
         // 서버의 환경 정보를 단일 값으로 반환합니다.
         return ResponseEntity.ok(env);
+    }
+
+    public ResponseEntity<UUID> test(){
+        return ResponseEntity.ok(randomUUID);
     }
 
     @GetMapping("/nice")
