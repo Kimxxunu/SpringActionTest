@@ -118,7 +118,7 @@ jobs:
             exit 1
           fi
 
-      # Docker Compose를 사용하여 컨테이너를 배포.
+      # Docker Compose를 사용하여 컨테이너를 배포
       - name: Docker compose
         uses: appleboy/ssh-action@master
         with:
